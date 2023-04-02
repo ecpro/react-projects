@@ -2,6 +2,7 @@ import { restaurantList } from "../contants";
 import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 
 function filterData(searchText, restaurants) {
   // 8 restraunt list = > filtered  rest with "King"
@@ -18,7 +19,7 @@ const Body = () => {
   const [searchText, setSearchText] = useState("");
 
   // empty dependency array => once after render
-  // dep arry [searchText] => once after initial render + everytime after redern (my searchText changes)
+  // dep array [searchText] => once after initial render + every time after re-render (my searchText changes)
   useEffect(() => {
     // API call
     getRestaurants();
@@ -26,16 +27,13 @@ const Body = () => {
 
   async function getRestaurants() {
     const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.5102932&lng=77.03269809999999&page_type=DESKTOP_WEB_LISTING"
     );
     const json = await data.json();
-    console.log(json);
     // Optional Chaining
     setAllRestaurants(json?.data?.cards[2]?.data?.data?.cards);
     setFilteredRestaurants(json?.data?.cards[2]?.data?.data?.cards);
   }
-
-  console.log("render");
 
   // not render component (Early return)
   if (!allRestaurants) return null;
@@ -70,10 +68,15 @@ const Body = () => {
         </button>
       </div>
       <div className="restaurant-list">
-        {/* You have to write logic for NO restraunt fount here */}
+        {/* You have to write logic for NO restaurants found here */}
         {filteredRestaurants.map((restaurant) => {
           return (
-            <RestaurantCard {...restaurant.data} key={restaurant.data.id} />
+            <Link
+              to={"/restaurant/" + restaurant.data.id}
+              key={restaurant.data.id}
+            >
+              <RestaurantCard {...restaurant.data} />
+            </Link>
           );
         })}
       </div>
