@@ -5,7 +5,7 @@ import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 
 function filterData(searchText, restaurants) {
-  // 8 restraunt list = > filtered  rest with "King"
+  // 8 restaurant list = > filtered  rest with "King"
   const filterData = restaurants.filter((restaurant) =>
     restaurant?.data?.name?.toLowerCase()?.includes(searchText.toLowerCase())
   );
@@ -75,7 +75,7 @@ const Body = () => {
               to={"/restaurant/" + restaurant.data.id}
               key={restaurant.data.id}
             >
-              <RestaurantCard {...restaurant.data} />
+              <RestaurantCard {...restaurant.data}/>
             </Link>
           );
         })}
