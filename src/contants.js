@@ -1,12 +1,18 @@
 export const IMG_CDN_URL =
   "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/";
 
+export const getRestaurantById = (resId) => {
+  return new Promise((resolve, reject) => {
+    resolve(restaurantList.filter(res => res.data.id === resId));
+  });
+}
+
 export const restaurantList = [
   {
     type: "restaurant",
     data: {
       type: "F",
-      id: "73011",
+      id: "11750",
       name: "KFC",
       uuid: "27ff4155-fe46-418e-9862-ab98953bf953",
       city: "22",
