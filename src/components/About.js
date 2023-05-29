@@ -1,5 +1,6 @@
 import ProfileClass from "./ProfileClass";
-import { Component } from "react";
+import {Component} from "react";
+import UserContext from "../utils/userContext";
 
 class About extends Component {
 
@@ -15,6 +16,9 @@ class About extends Component {
                 <h1>About Us Page</h1>
                 <p>This is the Hello About Us - Routing lesson</p>
                 <ProfileClass name="Piy"/>
+                <UserContext.Consumer>
+                    {({user}) => (<h4>{user.name}</h4>)}
+                </UserContext.Consumer>
             </div>
         );
     }

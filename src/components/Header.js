@@ -1,6 +1,7 @@
-import {useState} from "react";
+import {useState, useContext} from "react";
 import {Link} from "react-router-dom";
 import {useOnline} from "../utils/useOnline";
+import UserContext from "../utils/userContext";
 
 const Title = () => (
     <a href="/">
@@ -16,7 +17,9 @@ const Header = () => {
     const [loggedIn, setLoggedIn] = useState(false),
         handleLoginClick = () => {
             setLoggedIn(!loggedIn);
-        };
+        },
+        { user } = useContext(UserContext);
+
     return (
         <div className="header">
             <Title/>
@@ -35,6 +38,7 @@ const Header = () => {
                     </Link>
                     <li>Cart</li>
                 </ul>
+                <h6>{user.name}</h6>
             </div>
             {useOnline() ? '✅' : '❌'}
             <button onClick={handleLoginClick}>
