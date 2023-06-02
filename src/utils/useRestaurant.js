@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react";
 
 const useRestaurant = (resId) => {
-    [restaurant, setRestaurant] = useState(null);
-    console.log('useRestaurant hook called');
+    const [restaurant, setRestaurant] = useState(null);
+
     async function getRestaurantInfo() {
         const data = await fetch(
-            `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.5102932&lng=77.03269809999999&restaurantId=${resId}&submitAction=ENTER`
-        );
-        const restaurant = await data.json();
-        console.log('getRestaurantInfo in useRestaurant Called');
-        //const restaurant = await getRestaurantById(resId);
-        console.log(restaurant.data);
-        setRestaurant(restaurant.data);
-        return restaurant;
+                `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.5102932&lng=77.03269809999999&restaurantId=${resId}&submitAction=ENTER`
+            ),
+            json = await data.json();
+        console.log(json);
+        setRestaurant(json.data);
     }
 
     useEffect(() => {
-        console.log('useEffect in useRestaurant Called');
         getRestaurantInfo();
     },[]);
 
