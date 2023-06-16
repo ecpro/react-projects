@@ -1,12 +1,35 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {toggleMenu} from "../utils/appSlice";
+import {YOUTUBE_SEARCH_API} from "../utils/constants";
 
 const Header = () => {
     const dispatch = useDispatch(),
         toggleSidebar = () => {
             dispatch(toggleMenu());
-        };
+        },
+        [searchText, setSearchText] = useState(''),
+        [searchRes, setSearchRes] = useState(null),
+        [showSuggestions, setShowSuggestions] = useState(false),
+        getSearchSuggestions = async (searchText) => {
+            const response = await fetch(YOUTUBE_SEARCH_API + new URLSearchParams({
+                    q: searchText
+                })),
+                data = await response.json();
+
+            setSearchRes(data[1]);
+            console.log(data[1]);
+        }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            getSearchSuggestions(searchText)
+        }, 200);
+
+        return () => {
+            clearTimeout(timer);
+        }
+    }, [searchText]);
 
     return (
         <div className='grid grid-flow-col p-5 m-2 shadow-lg'>
@@ -21,8 +44,32 @@ const Header = () => {
             </div>
             <div className='col-span-10 px-10'>
                 <input className='w-1/2 border border-gray-400 p-2 rounded-l-full'
-                       type={"text"}/>
+                       type={"text"}
+                       onChange={(e) => {
+                           setSearchText(e.target.value)
+                       }}
+                       onFocus={() => {
+                           setShowSuggestions(true)
+                       }}
+                       onBlur={() => {
+                           setShowSuggestions(false)
+                       }}
+                />
                 <button className='border border-gray-400 px-5 py-2 bg-amber-100 rounded-r-full'>🔍</button>
+                {
+                    showSuggestions && searchRes && searchRes.length > 0 && (
+                        <div className='fixed bg-blue-200 rounded-lg w-[42rem] m-2 py-1 px-2'>
+                            <ul>
+                                {
+                                    searchRes && searchRes.map((res) => {
+                                        return (
+                                            <li className='p-1 m-1 hover:bg-amber-50 shadow-sm'>{res}</li>
+                                        );
+                                    })
+                                }
+                            </ul>
+                        </div>)
+                }
             </div>
             <div className='col-span-1'>
                 <img className='h-8'
